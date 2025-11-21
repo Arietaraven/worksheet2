@@ -16,6 +16,16 @@ type Note = {
 export function NoteCard({ note }: { note: Note }) {
   const [mode, setMode] = useState<"preview" | "raw">("preview");
 
+  const handleUpdate = async (formData: FormData) => {
+    "use server";
+    await updateNote(formData);
+  };
+
+  const handleDelete = async (formData: FormData) => {
+    "use server";
+    await deleteNote(formData);
+  };
+
   return (
     <article className="card stack">
       <header
@@ -73,7 +83,7 @@ export function NoteCard({ note }: { note: Note }) {
         )}
       </section>
 
-      <form action={updateNote} className="grid" style={{ gap: 12 }}>
+      <form action={handleUpdate} className="grid" style={{ gap: 12 }}>
         <input type="hidden" name="id" value={note.id} />
         <label>
           Title
@@ -88,7 +98,7 @@ export function NoteCard({ note }: { note: Note }) {
         </SubmitButton>
       </form>
 
-      <form action={deleteNote}>
+      <form action={handleDelete}>
         <input type="hidden" name="id" value={note.id} />
         <SubmitButton className="btn btn-danger" pendingLabel="Deleting...">
           Delete note
