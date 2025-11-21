@@ -4,7 +4,6 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { SubmitButton } from "@/components/forms/submit-button";
-import { deleteNote, updateNote } from "@/app/actions/notes";
 
 type Note = {
   id: string;
@@ -13,18 +12,14 @@ type Note = {
   created_at: string;
 };
 
-export function NoteCard({ note }: { note: Note }) {
+type NoteCardProps = {
+  note: Note;
+  updateAction: (formData: FormData) => void | Promise<void>;
+  deleteAction: (formData: FormData) => void | Promise<void>;
+};
+
+export function NoteCard({ note, updateAction, deleteAction }: NoteCardProps) {
   const [mode, setMode] = useState<"preview" | "raw">("preview");
-
-  const handleUpdate = async (formData: FormData) => {
-    "use server";
-    await updateNote(formData);
-  };
-
-  const handleDelete = async (formData: FormData) => {
-    "use server";
-    await deleteNote(formData);
-  };
 
   return (
     <article className="card stack">
@@ -83,7 +78,7 @@ export function NoteCard({ note }: { note: Note }) {
         )}
       </section>
 
-      <form action={handleUpdate} className="grid" style={{ gap: 12 }}>
+      <form action={updateAction} className="grid" style={{ gap: 12 }}>
         <input type="hidden" name="id" value={note.id} />
         <label>
           Title
@@ -98,7 +93,7 @@ export function NoteCard({ note }: { note: Note }) {
         </SubmitButton>
       </form>
 
-      <form action={handleDelete}>
+      <form action={deleteAction}>
         <input type="hidden" name="id" value={note.id} />
         <SubmitButton className="btn btn-danger" pendingLabel="Deleting...">
           Delete note

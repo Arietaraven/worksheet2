@@ -1,4 +1,4 @@
-import { createNote } from "@/app/actions/notes";
+import { createNote, deleteNote, updateNote } from "@/app/actions/notes";
 import { SubmitButton } from "@/components/forms/submit-button";
 import { NoteCard } from "@/components/notes/note-card";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -45,7 +45,14 @@ export default async function NotesPage() {
 
       <div className="stack">
         {notes?.length ? (
-          notes.map((note) => <NoteCard key={note.id} note={note} />)
+          notes.map((note) => (
+            <NoteCard
+              key={note.id}
+              note={note}
+              updateAction={updateNote}
+              deleteAction={deleteNote}
+            />
+          ))
         ) : (
           <p className="card">No notes yet. Create one above.</p>
         )}
