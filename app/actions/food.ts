@@ -22,7 +22,7 @@ export async function createFoodPhoto(formData: FormData) {
   const url = formData.get("url")?.toString().trim();
 
   if (!name || !url) {
-    return { success: false, message: "Name and URL are required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -32,7 +32,6 @@ export async function createFoodPhoto(formData: FormData) {
     user_id: user.id,
   });
   revalidatePath("/food");
-  return { success: true };
 }
 
 export async function updateFoodPhoto(formData: FormData) {
@@ -41,7 +40,7 @@ export async function updateFoodPhoto(formData: FormData) {
   const url = formData.get("url")?.toString().trim();
 
   if (!id || !name || !url) {
-    return { success: false, message: "All fields are required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -52,14 +51,13 @@ export async function updateFoodPhoto(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/food");
-  return { success: true };
 }
 
 export async function deleteFoodPhoto(formData: FormData) {
   const id = formData.get("id")?.toString();
 
   if (!id) {
-    return { success: false, message: "Select a photo." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -67,7 +65,6 @@ export async function deleteFoodPhoto(formData: FormData) {
   await supabase.from("food_photos").delete().eq("id", id).eq("user_id", user.id);
 
   revalidatePath("/food");
-  return { success: true };
 }
 
 export async function createFoodReview(formData: FormData) {
@@ -76,7 +73,7 @@ export async function createFoodReview(formData: FormData) {
   const content = formData.get("content")?.toString().trim();
 
   if (!foodId || !content || Number.isNaN(rating)) {
-    return { success: false, message: "Missing review details." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -88,7 +85,6 @@ export async function createFoodReview(formData: FormData) {
   });
 
   revalidatePath("/food");
-  return { success: true };
 }
 
 export async function updateFoodReview(formData: FormData) {
@@ -97,7 +93,7 @@ export async function updateFoodReview(formData: FormData) {
   const content = formData.get("content")?.toString().trim();
 
   if (!id || !content || Number.isNaN(rating)) {
-    return { success: false, message: "Missing review info." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -108,13 +104,12 @@ export async function updateFoodReview(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/food");
-  return { success: true };
 }
 
 export async function deleteFoodReview(formData: FormData) {
   const id = formData.get("id")?.toString();
   if (!id) {
-    return { success: false, message: "Review id missing." };
+    return;
   }
   const { supabase, user } = await getUserOrThrow();
   await supabase
@@ -123,6 +118,5 @@ export async function deleteFoodReview(formData: FormData) {
     .eq("id", id)
     .eq("user_id", user.id);
   revalidatePath("/food");
-  return { success: true };
 }
 
