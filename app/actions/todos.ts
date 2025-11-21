@@ -20,7 +20,7 @@ async function getUserOrThrow() {
 export async function createTodo(formData: FormData) {
   const title = formData.get("title")?.toString().trim();
   if (!title) {
-    return { success: false, message: "Title is required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -31,7 +31,6 @@ export async function createTodo(formData: FormData) {
   });
 
   revalidatePath("/todos");
-  return { success: true };
 }
 
 export async function toggleTodo(formData: FormData) {
@@ -39,7 +38,7 @@ export async function toggleTodo(formData: FormData) {
   const completed = formData.get("completed")?.toString() === "true";
 
   if (!id) {
-    return { success: false, message: "Missing todo id." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -50,7 +49,6 @@ export async function toggleTodo(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/todos");
-  return { success: true };
 }
 
 export async function renameTodo(formData: FormData) {
@@ -58,7 +56,7 @@ export async function renameTodo(formData: FormData) {
   const title = formData.get("title")?.toString().trim();
 
   if (!id || !title) {
-    return { success: false, message: "Missing todo info." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -69,19 +67,17 @@ export async function renameTodo(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/todos");
-  return { success: true };
 }
 
 export async function deleteTodo(formData: FormData) {
   const id = formData.get("id")?.toString();
 
   if (!id) {
-    return { success: false, message: "Missing todo id." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
   await supabase.from("todos").delete().eq("id", id).eq("user_id", user.id);
   revalidatePath("/todos");
-  return { success: true };
 }
 

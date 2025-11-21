@@ -22,7 +22,7 @@ export async function createPhoto(formData: FormData) {
   const url = formData.get("url")?.toString().trim();
 
   if (!name || !url) {
-    return { success: false, message: "Name and URL are required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -33,7 +33,6 @@ export async function createPhoto(formData: FormData) {
   });
 
   revalidatePath("/drive");
-  return { success: true };
 }
 
 export async function updatePhoto(formData: FormData) {
@@ -42,7 +41,7 @@ export async function updatePhoto(formData: FormData) {
   const url = formData.get("url")?.toString().trim();
 
   if (!id || !name || !url) {
-    return { success: false, message: "All fields are required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -53,19 +52,17 @@ export async function updatePhoto(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/drive");
-  return { success: true };
 }
 
 export async function deletePhoto(formData: FormData) {
   const id = formData.get("id")?.toString();
 
   if (!id) {
-    return { success: false, message: "Select a photo to delete." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
   await supabase.from("photos").delete().eq("id", id).eq("user_id", user.id);
   revalidatePath("/drive");
-  return { success: true };
 }
 

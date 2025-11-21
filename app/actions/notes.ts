@@ -21,7 +21,7 @@ export async function createNote(formData: FormData) {
   const content = formData.get("content")?.toString() ?? "";
 
   if (!title) {
-    return { success: false, message: "Title is required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -32,7 +32,6 @@ export async function createNote(formData: FormData) {
   });
 
   revalidatePath("/notes");
-  return { success: true };
 }
 
 export async function updateNote(formData: FormData) {
@@ -41,7 +40,7 @@ export async function updateNote(formData: FormData) {
   const content = formData.get("content")?.toString() ?? "";
 
   if (!id || !title) {
-    return { success: false, message: "Missing note info." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -52,17 +51,15 @@ export async function updateNote(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/notes");
-  return { success: true };
 }
 
 export async function deleteNote(formData: FormData) {
   const id = formData.get("id")?.toString();
   if (!id) {
-    return { success: false, message: "Select a note to delete." };
+    return;
   }
   const { supabase, user } = await getUserOrThrow();
   await supabase.from("notes").delete().eq("id", id).eq("user_id", user.id);
   revalidatePath("/notes");
-  return { success: true };
 }
 

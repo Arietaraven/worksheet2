@@ -21,7 +21,7 @@ export async function createPokemonReview(formData: FormData) {
   const rating = Number(formData.get("rating"));
 
   if (!pokemon || !title || !content || Number.isNaN(rating)) {
-    return { success: false, message: "All fields are required." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -34,7 +34,6 @@ export async function createPokemonReview(formData: FormData) {
   });
 
   revalidatePath("/pokemon");
-  return { success: true };
 }
 
 export async function updatePokemonReview(formData: FormData) {
@@ -44,7 +43,7 @@ export async function updatePokemonReview(formData: FormData) {
   const rating = Number(formData.get("rating"));
 
   if (!id || !title || !content || Number.isNaN(rating)) {
-    return { success: false, message: "Missing review data." };
+    return;
   }
 
   const { supabase, user } = await getUserOrThrow();
@@ -55,13 +54,12 @@ export async function updatePokemonReview(formData: FormData) {
     .eq("user_id", user.id);
 
   revalidatePath("/pokemon");
-  return { success: true };
 }
 
 export async function deletePokemonReview(formData: FormData) {
   const id = formData.get("id")?.toString();
   if (!id) {
-    return { success: false, message: "Review id missing." };
+    return;
   }
   const { supabase, user } = await getUserOrThrow();
   await supabase
@@ -70,6 +68,5 @@ export async function deletePokemonReview(formData: FormData) {
     .eq("id", id)
     .eq("user_id", user.id);
   revalidatePath("/pokemon");
-  return { success: true };
 }
 
