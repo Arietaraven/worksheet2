@@ -1,10 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import {
-  createTodo,
-  deleteTodo,
-  renameTodo,
-  toggleTodo,
-} from "@/app/actions/todo-actions";
+import { createTodo, deleteTodo, renameTodo, toggleTodo } from "@/app/actions/todo-actions";
 import { SubmitButton } from "@/components/forms/submit-button";
 
 export default async function TodosPage() {
