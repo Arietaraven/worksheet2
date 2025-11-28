@@ -70,9 +70,7 @@ export default async function DrivePage({
         </p>
 
         <form
-          action={async (formData: FormData) => {
-            await createPhoto(formData);
-          }}
+          action={createPhoto}
           className="grid"
           style={{ gap: 12, maxWidth: 600 }}
         >
@@ -141,9 +139,7 @@ export default async function DrivePage({
                 </div>
               )}
               <form
-                action={async (formData) => {
-                  await updatePhoto(formData);
-                }}
+                action={updatePhoto}
                 className="stack"
               >
                 <input type="hidden" name="id" value={photo.id} />
@@ -160,9 +156,9 @@ export default async function DrivePage({
                 </SubmitButton>
               </form>
               <form
-                action={async (formData) => {
-                  await deletePhoto(formData);
-                }}
+                action={deletePhoto}
+                method="post"
+                style={{ marginTop: 'auto' }}
               >
                 <input type="hidden" name="id" value={photo.id} />
                 <SubmitButton className="btn btn-danger" pendingLabel="Removing...">

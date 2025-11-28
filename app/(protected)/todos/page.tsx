@@ -31,16 +31,10 @@ export default async function TodosPage() {
             Create, read, update, and delete todos bound to your account.
           </p>
         </div>
-        <form
-          action={async (formData) => {
-            await createTodo(formData);
-          }}
-          className="stack"
-          style={{ maxWidth: 480 }}
-        >
+        <form action={createTodo} className="stack" style={{ maxWidth: 480 }}>
           <label>
             New task
-            <input className="input" name="title" placeholder="Ship feature" />
+            <input className="input" name="title" placeholder="Ship feature" required />
           </label>
           <SubmitButton pendingLabel="Adding...">Add todo</SubmitButton>
         </form>
