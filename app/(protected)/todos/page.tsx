@@ -4,7 +4,7 @@ import {
   deleteTodo,
   renameTodo,
   toggleTodo,
-} from "@/app/actions/todos";
+} from "@/app/actions/todo-actions";
 import { SubmitButton } from "@/components/forms/submit-button";
 
 export default async function TodosPage() {
@@ -54,11 +54,7 @@ export default async function TodosPage() {
                 }}
               >
                 <strong>{todo.title}</strong>
-                <form
-                  action={async (formData) => {
-                    await toggleTodo(formData);
-                  }}
-                >
+                <form action={toggleTodo}>
                   <input type="hidden" name="id" value={todo.id} />
                   <input
                     type="hidden"
@@ -72,9 +68,7 @@ export default async function TodosPage() {
               </div>
 
               <form
-                action={async (formData) => {
-                  await renameTodo(formData);
-                }}
+                action={renameTodo}
                 className="stack"
                 style={{ marginTop: 8 }}
               >
@@ -91,11 +85,7 @@ export default async function TodosPage() {
                   Save changes
                 </SubmitButton>
               </form>
-              <form
-                action={async (formData) => {
-                  await deleteTodo(formData);
-                }}
-              >
+              <form action={deleteTodo}>
                 <input type="hidden" name="id" value={todo.id} />
                 <SubmitButton className="btn btn-danger" pendingLabel="Deleting...">
                   Delete
